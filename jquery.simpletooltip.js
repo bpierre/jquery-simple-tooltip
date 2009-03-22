@@ -1,3 +1,9 @@
+/*
+ * jQuery Simple Tooltip 0.9.1
+ * Copyright (c) 2009 Pierre Bertet (pierrebertet.net)
+ * Licensed under the MIT (MIT-LICENSE.txt)
+ *
+*/
 ;(function($){
 	// simpletooltip
 	$.fn.simpletooltip = function(settings) {
