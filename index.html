@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-type" content="text/html; charset=iso-8859-1" />
+	<title>jQuery Simple Tooltip</title>
+
+	<link rel="stylesheet" href="doc.css" type="text/css" media="screen" />
+	<style type="text/css" media="screen">
+		.tooltip{width:200px;margin:0;padding:5px;font-size:11px;color:#666;background:#fff;border:5px solid #ccc;}
+		.tooltip p{margin:0;text-align:justify;}
+		#tooltip_1{z-index:100000;}
+		#tooltip_2{height:300px;width:300px;background:#fff;border-color:#e66;}
+		#tooltip_3{background:#fff;border-color:#8c6;}
+	</style>
+
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+	<script type="text/javascript" src="jquery.simpletooltip.js"></script>
+	<script type="text/javascript">
+		$j(function(){
+			$j("a.tooltiplink").simpletooltip();
+			$j("a.clic").simpletooltip({click: true});
+			$j("a.delay").simpletooltip({hideDelay: 0.5});
+			$j("#demo_1").simpletooltip({ margin: 10 });
+			$j("#demo_2").simpletooltip({ showEffect: "fadeIn", hideEffect: "fadeOut" });
+			$j("#demo_3").simpletooltip({ showEffect: "slideDown", hideEffect: "slideUp" });
+			$j("#demo_4").simpletooltip({ showEffect: "show", hideEffect: "hide" });
+			$j("#demo_5").simpletooltip({ click: true });
+			$j("#demo_6").simpletooltip({ hideDelay: 0.5 });
+			$j("#demo_7").simpletooltip({ click: true, hideOnLeave: false });
+			$j("#demo_8").simpletooltip({
+				callback: function(tooltip){
+					window.alert('Callback : affichage de la tooltip #'+tooltip.id);
+				}
+			});
+			$j("#demo_9").simpletooltip({
+				customTooltip: function(target){
+					return '<p style="width:200px;height:50px;margin:0;padding:10px;background:#fff;border:1px solid #000;">Texte de l\'élément survolé :<br /> "'+ $j(target).text() +'" </p>';
+				},
+				showEffect: "fadeIn",
+				hideEffect: "fadeOut"
+			});
+		});
+	</script>
+
+</head>
+<body>
+	<div id="container">
+		<h1>jQuery Simple Tooltip</h1>
+			<h2>Démonstration</h2>
+			<p>Au survol d'un <a href="#tooltip_1" class="tooltiplink">lien</a> contenu dans ce <a href="#tooltip_1" class="tooltiplink">paragraphe</a>, une tooltip devrait apparaître.</p>
+			<p>Au survol du lien contenu dans ce paragraphe, une <a href="#tooltip_2" class="tooltiplink">seconde</a> tooltip devrait apparaître.</p>
+			<p>Il est possible d'activer la tooltip <a href="#tooltip_3" class="clic">au clic</a>.</p>
+			<p>Il est possible de <a href="#tooltip_3" class="delay">retarder la disparition de la tooltip</a>.</p>
+			<h2>Fonctionnement</h2>
+			<p>Le lien qui fera apparaître l'élément au survol doit pointer vers son <strong>id</strong> :</p>
+			<pre>
+&lt;a href="#ma_tooltip"&gt;Lien&lt;/a&gt;
+&lt;div id="ma_tooltip"&gt;Tooltip&lt;/div&gt;</pre>
+			<p>Il est ainsi possible de faire pointer plusieurs liens vers un même élément, donc de faire apparaître la même tooltip plusieurs fois sans dupliquer le code, puisqu'elle va simplement se déplacer sur la page :</p>
+			<pre>
+&lt;a href="#ma_tooltip"&gt;Lien 1&lt;/a&gt;
+&lt;a href="#ma_tooltip"&gt;Lien 2&lt;/a&gt;
+&lt;div id="ma_tooltip"&gt;Tooltip&lt;/div&gt;</pre>
+			<p>Si l'utilisateur n'utilise pas Javascript, alors le lien interne fonctionnera normalement et il verra la tooltip. Dans le cas inverse, il ne pourra pas cliquer sur le lien, mais celui-ci lui affichera la tooltip au survol.</p>
+			<h2>Utilisation</h2>
+			<p>Il suffit de cibler avec jQuery tous les liens pointant vers une tooltip et d'exécuter la méthode <code>simpletooltip()</code>, par exemple pour cette page :</p>
+			<pre>// simpletooltip renvoie l'objet précédemment sélectionné, selon la convention jQuery.
+$("a").simpletooltip();</pre>
+			<p>Pour ajouter un bouton permettant de fermer la tooltip au clic, il faut placer un lien pointant vers une ancre (idéalement, cette ancre permet de revenir au niveau du lien), et possédant un attribut rel="close".</p>
+			<pre>
+&lt;a href="#..." rel="close"&gt;Fermer la tooltip&lt;a&gt;</pre>
+			<p>Il est possible de passer des options à la méthode simpletooltip, sous la forme d'un tableau associatif :</p>
+			<ul>
+				<li><strong>margin</strong> permet de définir l'écart minimal entre le bord de la fenêtre et la tooltip, en pixels. (5 par défaut)</li>
+				<li><strong>effect</strong> permet de définir l'animation que va utiliser jQuery pour faire apparaître la tooltip (effets intégrés à jQuery - voir&nbsp;<a href="http://docs.jquery.com/Effects">documentation</a>).</li>
+				<li><strong>click</strong>, défini sur true, il permet d'ouvrir la tooltip au clic. (false par défaut)</li>
+				<li><strong>delay</strong>, en secondes, permet de retarder la disparition de la tooltip au rollout. (0 par défaut)</li>
+			</ul>
+			
+			<h3>margin</h3>
+			<pre>// Ecart de 10 pixels
+$("a").simpletooltip( { margin: 10 } );</pre>
+			<p>Démonstration : <a id="demo_1" href="#tooltip_1">tooltip</a></p>
+			
+			<h3>showEffect et hideEffect</h3>
+			<pre>// Effet "fadeIn"
+$("a").simpletooltip( { showEffect: "fadeIn", hideEffect: "fadeOut" } );</pre>
+			<p>Démonstration : <a id="demo_2" href="#tooltip_1">tooltip</a></p>
+			
+			<pre>// Effet "slideDown"
+$("a").simpletooltip( { showEffect: "slideDown", hideEffect: "slideUp" } );</pre>
+			<p>Démonstration : <a id="demo_3" href="#tooltip_1">tooltip</a></p>
+			
+			<pre>// Effet "show"
+$("a").simpletooltip( { showEffect: "show", hideEffect: "hide" } );</pre>
+			<p>Démonstration : <a id="demo_4" href="#tooltip_1">tooltip</a></p>
+			
+			<h3>click</h3>
+			<pre>// Au clic
+$("a").simpletooltip( { click: true } );</pre>
+			<p>Démonstration : <a id="demo_5" href="#tooltip_1">tooltip</a></p>
+			
+			<h3>hideDelay</h3>
+			<pre>// Retarder la disparition
+$("a").simpletooltip( { hideDelay: 0.5 } );</pre>
+			<p>Démonstration : <a id="demo_6" href="http://localhost/svn/share/doc/jquery_simpletooltip.htm#tooltip_1">tooltip</a></p>
+			
+			<h3>hideOnLeave</h3>
+			<pre>// Ne pas cacher la tooltip lorsque le curseur quitte la tooltip
+$("a").simpletooltip( { click: true, hideOnLeave: false } );</pre>
+			<p>Démonstration : <a id="demo_7" href="#tooltip_3">tooltip</a></p>
+			
+			<h3>showCallback</h3>
+			<pre>// Exécuter une fonction lorsque la tooltip s'affiche
+$("a").simpletooltip({
+	callback: function(tooltip){
+		window.alert('Callback : affichage de la tooltip #'+tooltip.id);
+	}
+});</pre>
+			<p>Démonstration : <a id="demo_8" href="#tooltip_1">tooltip</a></p>
+			
+			<h3>customTooltip</h3>
+			<pre>// Permet de générer dynamiquement une tooltip
+$("a").simpletooltip({
+	customTooltip: function(target){
+		return '&lt;p&gt; vous avez survolé le lien suivant : "'+ $(target).text() +'" &lt;/p&gt;';
+	}
+});</pre>
+			<p>Démonstration : <strong id="demo_9">tooltip</strong> (il n'est pas obligatoire de passer par un lien pour une tooltip dynamique).</p>
+			
+			<h2>Téléchargement</h2>
+			<p><a href="http://172.17.11.165/svn/share/pack/?type=js&files=share/js/jquery.simpletooltip.js">jQuery Simple Tooltip</a></p>
+			
+			<div id="tooltip_1" class="tooltip">
+				<h2>Tooltip 1</h2>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+			</div>
+			<div id="tooltip_2" class="tooltip">
+				<h2>Tooltip 2</h2>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+			</div>
+			<div id="tooltip_3" class="tooltip">
+				<h2>Tooltip 3</h2>
+				<p><a href="#" rel="close">Fermer la tooltip au clic ?</a></p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+			</div>
+	</div>
+</body>
+</html>
